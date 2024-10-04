@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Note";
+}
+
+@model List<MyWebApp.Models.Note>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes</title>
+    <link rel="stylesheet" href="~/css/note.css" asp-append-version="true" />
+</head>
+<body>
+    <h2>Notes</h2>
+
+    <!-- Form thêm note mới -->
+    <h3>Add New Note</h3>
+    <form asp-action="Create">
+        <div class="form-group">
+            <label for="Title">Title</label>
+            <input type="text" id="Title" name="Title" required />
+        </div>
+        <div class="form-group">
+            <label for="Content">Content</label>
+            <textarea id="Content" name="Content" required></textarea>
+        </div>
+        <button type="submit">Add Note</button>
+    </form>
+
+    <!-- Hiển thị danh sách các note -->
+    <h3>All Notes</h3>
+    <ul class="note-list">
+        @foreach (var note in Model)
+        {
+            <li class="note-item">
+                <strong>@note.Title</strong> - <em>@note.CreatedDate.ToString("yyyy-MM-dd")</em>
+                <p>@note.Content</p>
+
+                <!-- Nút Edit -->
+                <a href="@Url.Action("Edit", "Note", new { id = note.Id })">Edit</a>
+
+                <!-- Nút Delete -->
+                <form asp-action="Delete" method="post" style="display:inline-block;">
+                    <input type="hidden" name="Id" value="@note.Id" />
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        }
+    </ul>
+
+</body>
+</html>
